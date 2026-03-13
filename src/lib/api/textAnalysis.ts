@@ -24,8 +24,8 @@ export interface AnalysisResponse {
 
 export const pingBackend = async (): Promise<{ ok: boolean, ready: boolean }> => {
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-        const response = await fetch(`${apiUrl}/`, { method: "GET" });
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://us-central1-mbai-native-detector-2026.cloudfunctions.net/analyze";
+        const response = await fetch(apiUrl, { method: "POST", headers: { "Content-Type": "application/json" }, body: JSON.stringify({ text: "ping" }) });
         if (!response.ok) return { ok: false, ready: false };
         const data = await response.json();
         return { ok: true, ready: !!data.ready };
@@ -40,8 +40,8 @@ export const analyzeDocument = async (text: string): Promise<AnalysisResponse> =
     }
 
     try {
-        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "http://localhost:8000";
-        const response = await fetch(`${apiUrl}/api/analyze`, {
+        const apiUrl = process.env.NEXT_PUBLIC_API_URL || "https://us-central1-mbai-native-detector-2026.cloudfunctions.net/analyze";
+        const response = await fetch(apiUrl, {
             method: "POST",
             headers: {
                 "Content-Type": "application/json",
